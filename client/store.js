@@ -1,5 +1,8 @@
 import {createStore, applyMiddleware} from 'redux';
 import {logger} from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+import axios from 'axios';
+import socket from './socket';
 
 const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
 const RECEIVE_POSTED_MESSAGE = 'RECEIVE_POSTED_MESSAGE';
@@ -8,6 +11,29 @@ const initialState = {
   newMessageContent: '',
   messages: []
 };
+
+export function fetchMessages (  ) {
+    return function thunk(dispatch) {
+       return axios.get('/api/messages')
+            .then(res => res.data)
+            .then(messages => dispatch(gotMessagesFromServer(messages)));
+    };
+}
+
+export function postMessage (content,channelId  ) {
+    return function thunk(dispatch) {
+        return  axios.post('/api/messages', {content, channelId})
+            .then(res => res.data)
+            .then(message => {
+                dispatch(writeMessage(''));
+                dispatch(receivePostedMessage(message))
+                socket.emit('new-message', message);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    };
+}
 
 export function gotMessagesFromServer (messages) {
   return {
@@ -46,7 +72,7 @@ function reducer (state = initialState, action) {
   }
 }
 
-const enhancements = applyMiddleware(logger);
+const enhancements = applyMiddleware(logger, thunkMiddleware);
 const store = createStore(reducer, enhancements);
 export default store;
 
