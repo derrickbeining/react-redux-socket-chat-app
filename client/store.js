@@ -12,27 +12,27 @@ const initialState = {
   messages: []
 };
 
-export function fetchMessages (  ) {
-    return function thunk(dispatch) {
-       return axios.get('/api/messages')
-            .then(res => res.data)
-            .then(messages => dispatch(gotMessagesFromServer(messages)));
-    };
+export function fetchMessages () {
+  return function thunk (dispatch) {
+    return axios.get('/api/messages')
+      .then(res => res.data)
+      .then(messages => dispatch(gotMessagesFromServer(messages)));
+  };
 }
 
-export function postMessage (content,channelId  ) {
-    return function thunk(dispatch) {
-        return  axios.post('/api/messages', {content, channelId})
-            .then(res => res.data)
-            .then(message => {
-                dispatch(writeMessage(''));
-                dispatch(receivePostedMessage(message))
-                socket.emit('new-message', message);
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    };
+export function postMessage (message) {
+  return function thunk (dispatch) {
+    return axios.post('/api/messages', message)
+      .then(res => res.data)
+      .then(postedMessage => {
+        dispatch(writeMessage(''));
+        dispatch(receivePostedMessage(postedMessage))
+        socket.emit('new-message', postedMessage);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
 }
 
 export function gotMessagesFromServer (messages) {
