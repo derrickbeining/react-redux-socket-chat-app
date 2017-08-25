@@ -8,6 +8,7 @@ module.exports = io => {
     console.log(socket.id, ' has made a persistent connection to the server!');
 
     socket.on('new-message', message => {
+      console.log('new message ', message);
       socket.broadcast.emit('new-message', message);
     });
 

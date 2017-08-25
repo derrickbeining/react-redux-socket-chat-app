@@ -1,11 +1,12 @@
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux';
+import {logger} from 'redux-logger';
 
 const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
 const RECEIVE_POSTED_MESSAGE = 'RECEIVE_POSTED_MESSAGE';
 const WRITE_MESSAGE = 'WRITE_MESSAGE'
 const initialState = {
-    newMessageContent: '',
-    messages: []
+  newMessageContent: '',
+  messages: []
 };
 
 export function gotMessagesFromServer (messages) {
@@ -16,17 +17,17 @@ export function gotMessagesFromServer (messages) {
 }
 
 export function writeMessage (content) {
-    return {
-        type: WRITE_MESSAGE,
-        newMessageContent: content
-    };
+  return {
+    type: WRITE_MESSAGE,
+    newMessageContent: content
+  };
 }
 
 export function receivePostedMessage (message) {
-    return {
-        type: RECEIVE_POSTED_MESSAGE,
-        message : message
-    };
+  return {
+    type: RECEIVE_POSTED_MESSAGE,
+    message: message
+  };
 }
 
 function reducer (state = initialState, action) {
@@ -34,14 +35,18 @@ function reducer (state = initialState, action) {
     case GOT_MESSAGES_FROM_SERVER:
       return Object.assign({}, state, {messages: action.messages});
     case WRITE_MESSAGE:
-        return Object.assign({}, state, {newMessageContent: action.newMessageContent});
+      return Object.assign({}, state, {newMessageContent: action.newMessageContent});
     case RECEIVE_POSTED_MESSAGE:
-        return Object.assign({}, state, {messages: state.messages.concat(action.message)});
+      return Object.assign(
+        {},
+        state,
+        {messages: state.messages.concat(action.message)});
     default:
       return state;
   }
 }
 
-const store = createStore(reducer);
+const enhancements = applyMiddleware(logger);
+const store = createStore(reducer, enhancements);
 export default store;
 
