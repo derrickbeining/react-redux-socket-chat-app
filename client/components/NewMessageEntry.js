@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 import store, {writeMessage, receivePostedMessage, postMessage} from '../store';
-import socket from '../socket';
 
 export default class NewMessageEntry extends Component {
   constructor(props) {
@@ -25,11 +23,13 @@ export default class NewMessageEntry extends Component {
 
   handleSubmit (evt) {
     evt.preventDefault()
-    const message = {
-      content: this.state.newMessageContent,
-      channelId: this.props.channelId
-    }
-    store.dispatch(postMessage(message));
+      console.log(this.state.name);
+
+      const name = this.state.name;
+      const content = this.state.newMessageContent;
+      const channelId =  this.props.channelId;
+
+    store.dispatch(postMessage({name, content, channelId}));
   }
 
   render () {
