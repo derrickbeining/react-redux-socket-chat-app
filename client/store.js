@@ -73,18 +73,7 @@ export function writeMessage (content) {
   };
 }
 
-<<<<<<< HEAD
 export function writeUsername (usernameInput) {
-=======
-export function writeName (content) {
-    return {
-        type: WRITE_NAME,
-        name: content
-    };
-}
-
-export function receivePostedMessage (message) {
->>>>>>> 8fde3176e7e5917438d351c2bc8887242c7d05c4
   return {
     type: WRITE_USERNAME,
     usernameInput
@@ -103,7 +92,6 @@ function reducer (state = initialState, action) {
       );
 
     case RECEIVE_POSTED_MESSAGE:
-<<<<<<< HEAD
       return Object.assign(
         {},
         state,
@@ -131,11 +119,6 @@ function reducer (state = initialState, action) {
         {usernameInput: action.usernameInput}
       );
 
-=======
-      return Object.assign({}, state, {messages: state.messages.concat(action.message)});
-    case WRITE_NAME:
-      return Object.assign({}, state, {name: action.name});
->>>>>>> 8fde3176e7e5917438d351c2bc8887242c7d05c4
     default:
       return state;
   }
