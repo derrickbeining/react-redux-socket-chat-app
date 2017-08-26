@@ -9,10 +9,15 @@ const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
 const RECEIVE_POSTED_MESSAGE = 'RECEIVE_POSTED_MESSAGE';
 const SET_USERNAME = 'SET_USERNAME';
 const WRITE_MESSAGE = 'WRITE_MESSAGE'
+<<<<<<< HEAD
 const WRITE_USERNAME = 'WRITE_USERNAME'
 
 // INITIAL STATE ////////////////////////////////////////
+=======
+const WRITE_NAME = 'WRITE_NAME'
+>>>>>>> 8fde3176e7e5917438d351c2bc8887242c7d05c4
 const initialState = {
+  name: '',
   newMessageContent: '',
   messages: [],
   username: '',
@@ -28,9 +33,9 @@ export function fetchMessages () {
   };
 }
 
-export function postMessage (message) {
+export function postMessage ({name, content, channelId}) {
   return function thunk (dispatch) {
-    return axios.post('/api/messages', message)
+    return axios.post('/api/messages', {name, content, channelId})
       .then(res => res.data)
       .then(postedMessage => {
         dispatch(writeMessage(''));
@@ -72,7 +77,18 @@ export function writeMessage (content) {
   };
 }
 
+<<<<<<< HEAD
 export function writeUsername (usernameInput) {
+=======
+export function writeName (content) {
+    return {
+        type: WRITE_NAME,
+        name: content
+    };
+}
+
+export function receivePostedMessage (message) {
+>>>>>>> 8fde3176e7e5917438d351c2bc8887242c7d05c4
   return {
     type: WRITE_USERNAME,
     usernameInput
@@ -91,6 +107,7 @@ function reducer (state = initialState, action) {
       );
 
     case RECEIVE_POSTED_MESSAGE:
+<<<<<<< HEAD
       return Object.assign(
         {},
         state,
@@ -118,6 +135,11 @@ function reducer (state = initialState, action) {
         {usernameInput: action.usernameInput}
       );
 
+=======
+      return Object.assign({}, state, {messages: state.messages.concat(action.message)});
+    case WRITE_NAME:
+      return Object.assign({}, state, {name: action.name});
+>>>>>>> 8fde3176e7e5917438d351c2bc8887242c7d05c4
     default:
       return state;
   }

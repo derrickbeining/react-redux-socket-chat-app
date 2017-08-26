@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import axios from 'axios';
 import store, {writeMessage, receivePostedMessage, postMessage} from '../store';
 import socket from '../socket';
 import AlertNotification from './AlertNotification';
