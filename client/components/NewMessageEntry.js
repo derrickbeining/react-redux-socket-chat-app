@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import store, {writeMessage, receivePostedMessage, postMessage} from '../store';
 import socket from '../socket';
+import AlertNotification from './AlertNotification';
 
 export default class NewMessageEntry extends Component {
   constructor(props) {
@@ -23,9 +24,10 @@ export default class NewMessageEntry extends Component {
     store.dispatch(writeMessage(event.target.value))
   }
 
-  handleSubmit (evt) {
-    evt.preventDefault()
+  handleSubmit (event) {
+    event.preventDefault()
     const message = {
+      name: this.state.username,
       content: this.state.newMessageContent,
       channelId: this.props.channelId
     }
@@ -33,13 +35,16 @@ export default class NewMessageEntry extends Component {
   }
 
   render () {
+    const alertMessage = 'Please set a username before posting a message';
+    const alertShouldDisplay = this.state.username.length <= 0;
     return (
       <form id="new-message-form" onSubmit={this.handleSubmit}>
         <div className="input-group input-group-lg">
           <input
-            className="form-control"
+            className={`form-control ${!this.state.username && '.bg-warning'}`}
             type="text"
             name="content"
+            placeholder="Chat it up!"
             value={this.state.newMessageContent}
             onChange={this.handleChange}
           />
@@ -47,6 +52,10 @@ export default class NewMessageEntry extends Component {
             <button className="btn btn-default" type="submit">Chat!</button>
           </span>
         </div>
+        <AlertNotification
+          message={alertMessage}
+          shouldDisplay={alertShouldDisplay}
+        />
       </form>
     );
   }
