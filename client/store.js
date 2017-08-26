@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
 import {logger} from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import axios from 'axios';
@@ -22,11 +22,13 @@ const initialState = {
 
 // THUNKS /////////////////////////////////////////////
 export function fetchMessages () {
-  return function thunk (dispatch) {
+  function thunk (dispatch) {
     return axios.get('/api/messages')
       .then(res => res.data)
       .then(messages => dispatch(gotMessagesFromServer(messages)));
-  };
+  }
+  thunk.type = GOT_MESSAGES_FROM_SERVER;
+  return thunk;
 }
 
 export function postMessage ({name, content, channelId}) {
@@ -48,7 +50,7 @@ export function postMessage ({name, content, channelId}) {
 export function gotMessagesFromServer (messages) {
   return {
     type: GOT_MESSAGES_FROM_SERVER,
-    messages
+    messages: messages
   };
 }
 
@@ -126,7 +128,9 @@ function reducer (state = initialState, action) {
 
 
 // STORE AND MIDDLEWARE ///////////////////////////////////
-const enhancements = applyMiddleware(logger, thunkMiddleware);
+const reduxChromeDevTool =
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const enhancements = reduxChromeDevTool(applyMiddleware(logger, thunkMiddleware));
 const store = createStore(reducer, enhancements);
 export default store;
 

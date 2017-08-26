@@ -43,7 +43,7 @@ export default class NameEntry extends React.Component {
           onChange={(event) => this.handleChange(event)}
         /> */}
 
-        <div className="col-lg-6">
+        <div className="col-xl-6">
           <div className="input-group">
             {/* <label htmlFor="name">Enter your&nbsp; </label> */}
             <span className="input-group-addon">@</span>

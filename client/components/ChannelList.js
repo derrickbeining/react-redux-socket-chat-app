@@ -25,6 +25,8 @@ export default class ChannelList extends Component {
 
   render () {
     const messages = this.state.messages;
+    console.log(messages);
+
     function countMessagesByChannelId (id) {
       return messages.filter(message => message.channelId === id).length;
     }
