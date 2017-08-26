@@ -9,13 +9,9 @@ const GOT_MESSAGES_FROM_SERVER = 'GOT_MESSAGES_FROM_SERVER';
 const RECEIVE_POSTED_MESSAGE = 'RECEIVE_POSTED_MESSAGE';
 const SET_USERNAME = 'SET_USERNAME';
 const WRITE_MESSAGE = 'WRITE_MESSAGE'
-<<<<<<< HEAD
 const WRITE_USERNAME = 'WRITE_USERNAME'
 
 // INITIAL STATE ////////////////////////////////////////
-=======
-const WRITE_NAME = 'WRITE_NAME'
->>>>>>> 8fde3176e7e5917438d351c2bc8887242c7d05c4
 const initialState = {
   name: '',
   newMessageContent: '',
